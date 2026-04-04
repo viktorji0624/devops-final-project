@@ -1,4 +1,5 @@
 #!/bin/bash
+cd "$(dirname "$0")/.."
 
 echo "Stopping Docker containers..."
 docker compose down
