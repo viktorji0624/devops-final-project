@@ -42,6 +42,9 @@ out/
 ### VS Code ###
 .vscode/
 
+### Vagrant ###
+.vagrant/
+
 ### CSS ###
 _site/
 *.css
