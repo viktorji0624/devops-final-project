@@ -55,6 +55,10 @@ Open http://localhost:8080, paste the password, and install suggested plugins.
 
 ```
 devops-final-project/
+├── ansible/
+│   ├── ansible.cfg          # Local Ansible defaults
+│   ├── deploy.yml           # Deployment playbook for the production VM
+│   └── inventory.ini        # SSH target for the Vagrant VM
 ├── docker-compose.yml        # All services (databases + pipeline tools)
 ├── burpsuite/
 │   ├── Dockerfile            # Custom Burp Suite CE image
@@ -100,12 +104,58 @@ devops-final-project/
 
 ### Ansible Deployment to Production VM
 
-1. Set up a VM (Vagrant or cloud) with SSH access
-2. Install Ansible on the Jenkins container
-3. Create an Ansible inventory file with the VM's IP/hostname
-4. Create a playbook that deploys the built `.jar` and starts the application
-5. Add a deploy stage to the Jenkinsfile that runs the Ansible playbook
-6. Verify the PetClinic welcome screen is accessible on the VM
+The repository includes deployment automation under `ansible/` for the Vagrant-based production VM.
+
+Files:
+- `ansible/inventory.ini`: Vagrant SSH target definition
+- `ansible/ansible.cfg`: local Ansible defaults
+- `ansible/deploy.yml`: copies the packaged jar to the VM and runs it as a `systemd` service
+
+Assumptions:
+- The VM is already running from `Vagrantfile`
+- The application has already been built by Jenkins or locally
+- The packaged jar exists at `target/*.jar`
+- The VM is reached through Vagrant SSH forwarding on `127.0.0.1:2222`
+- SSH user is `vagrant`
+
+Local deployment flow:
+
+1. Start the VM:
+
+   ```bash
+   vagrant up --provider=vmware_desktop
+   ```
+
+2. Package the application:
+
+   ```bash
+   ./mvnw clean package -DskipTests
+   ```
+
+3. Deploy the packaged jar:
+
+   ```bash
+   ansible-playbook -i ansible/inventory.ini ansible/deploy.yml \
+     --private-key .vagrant/machines/default/vmware_desktop/private_key \
+     -e jar_path=target/spring-petclinic-4.0.0-SNAPSHOT.jar
+   ```
+
+4. Verify the deployed application:
+
+   - Host forwarded port: `localhost:8082`
+   - Vagrant private IP inside the VM network: `192.168.56.10:8080`
+
+Jenkins handoff:
+
+Once Jenkins has already run the build and tests, the deploy stage can call the same command:
+
+```bash
+ansible-playbook -i ansible/inventory.ini ansible/deploy.yml \
+  --private-key .vagrant/machines/default/vmware_desktop/private_key \
+  -e jar_path=target/spring-petclinic-4.0.0-SNAPSHOT.jar
+```
+
+If your Vagrant provider is not VMware Desktop, update the private key path to match the provider-specific directory under `.vagrant/machines/default/`.
 
 ## Verifying the Full Pipeline
 
