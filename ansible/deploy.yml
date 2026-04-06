@@ -1,0 +1,110 @@
+---
+- name: Deploy Spring PetClinic to production VM
+  hosts: petclinic_prod
+  become: true
+  vars:
+    app_name: petclinic
+    app_dir: /opt/petclinic
+    app_jar: "{{ app_dir }}/petclinic.jar"
+    app_port: 8080
+    local_jar_path: >-
+      {{
+        jar_path
+        if (jar_path is defined and jar_path.startswith('/'))
+        else playbook_dir + '/../' + (jar_path | default('target/spring-petclinic-4.0.0-SNAPSHOT.jar'))
+      }}
+    app_service_name: petclinic
+
+  tasks:
+    - name: Validate the packaged jar exists on the control node
+      ansible.builtin.stat:
+        path: "{{ local_jar_path }}"
+      delegate_to: localhost
+      become: false
+      register: local_jar
+
+    - name: Stop when the packaged jar cannot be found
+      ansible.builtin.fail:
+        msg: "Packaged jar not found at {{ local_jar_path }}. Build the app first or pass -e jar_path=/path/to/jar."
+      when: not local_jar.stat.exists
+
+    - name: Ensure deployment directory exists
+      ansible.builtin.file:
+        path: "{{ app_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Copy packaged jar to the VM
+      ansible.builtin.copy:
+        src: "{{ local_jar_path }}"
+        dest: "{{ app_jar }}"
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - Restart petclinic
+
+    - name: Install systemd service for PetClinic
+      ansible.builtin.copy:
+        dest: "/etc/systemd/system/{{ app_service_name }}.service"
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          [Unit]
+          Description=Spring PetClinic application
+          After=network.target
+
+          [Service]
+          Type=simple
+          WorkingDirectory={{ app_dir }}
+          ExecStart=/usr/bin/java -jar {{ app_jar }}
+          SuccessExitStatus=143
+          Restart=always
+          RestartSec=5
+          User=root
+          Environment=SERVER_PORT={{ app_port }}
+
+          [Install]
+          WantedBy=multi-user.target
+      notify:
+        - Reload systemd
+        - Restart petclinic
+
+    - name: Flush service handlers before verification
+      ansible.builtin.meta: flush_handlers
+
+    - name: Ensure PetClinic service is enabled and started
+      ansible.builtin.systemd:
+        name: "{{ app_service_name }}"
+        enabled: true
+        state: started
+
+    - name: Wait for application port to become available
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: "{{ app_port }}"
+        delay: 5
+        timeout: 120
+
+    - name: Verify the PetClinic welcome page responds
+      ansible.builtin.uri:
+        url: "http://127.0.0.1:{{ app_port }}/"
+        return_content: true
+        status_code: 200
+      register: petclinic_home
+      retries: 10
+      delay: 5
+      until: petclinic_home.status == 200
+
+  handlers:
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+    - name: Restart petclinic
+      ansible.builtin.systemd:
+        name: "{{ app_service_name }}"
+        state: restarted
