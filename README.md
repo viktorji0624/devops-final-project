@@ -28,8 +28,10 @@ All pipeline services run as Docker containers on a shared `devsecops-net` bridg
 ### 1. Start all services
 
 ```bash
-docker compose up -d
+./scripts/startup.sh vmware_desktop
 ```
+
+This starts the Docker services and the Vagrant production VM together. If you only need the Docker stack, you can still run `docker compose up -d` manually.
 
 ### 2. Unlock Jenkins
 
@@ -112,7 +114,7 @@ Files:
 - `ansible/deploy.yml`: copies the packaged jar to the VM and runs it as a `systemd` service
 
 Assumptions:
-- The VM is already running from `Vagrantfile`
+- The shared local environment has already been started
 - The application has already been built by Jenkins or locally
 - The packaged jar exists at `target/*.jar`
 - The VM is reached through Vagrant SSH forwarding on `127.0.0.1:2222`
@@ -120,19 +122,13 @@ Assumptions:
 
 Local deployment flow:
 
-1. Start the VM:
-
-   ```bash
-   vagrant up --provider=vmware_desktop
-   ```
-
-2. Package the application:
+1. Package the application:
 
    ```bash
    ./mvnw clean package -DskipTests
    ```
 
-3. Deploy the packaged jar:
+2. Deploy the packaged jar:
 
    ```bash
    ansible-playbook -i ansible/inventory.ini ansible/deploy.yml \
@@ -140,7 +136,7 @@ Local deployment flow:
      -e jar_path=target/spring-petclinic-4.0.0-SNAPSHOT.jar
    ```
 
-4. Verify the deployed application:
+3. Verify the deployed application:
 
    - Host forwarded port: `localhost:8082`
    - Vagrant private IP inside the VM network: `192.168.56.10:8080`
@@ -168,11 +164,7 @@ If your Vagrant provider is not VMware Desktop, update the private key path to m
 ## Stopping Services
 
 ```bash
-docker compose down
+./scripts/teardown.sh
 ```
 
-To also remove volumes (all data):
-
-```bash
-docker compose down -v
-```
+This stops the Docker services and destroys the Vagrant VM. If you only need to stop the Docker stack, you can still use `docker compose down` manually.
