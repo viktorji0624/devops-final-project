@@ -83,7 +83,7 @@ devops-final-project/
 
 ### SonarQube Integration
 
-1. Log into SonarQube at http://localhost:9000 (admin/admin)
+1. Log into SonarQube at http://localhost:9000 (admin/1234)
 2. Create a project and generate an authentication token
 3. Add the SonarQube stage to the Jenkinsfile with the token
 4. SonarQube is reachable from Jenkins at `http://sonarqube:9000` (container name)
