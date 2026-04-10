@@ -25,7 +25,7 @@ pipeline {
       }
     }
 
-    // Future stage placeholder: Test
-    // Future stage placeholder: Deploy
+    // Future stage placeholder for Test
+    // Future stage placeholder for Deploy
   }
 }
