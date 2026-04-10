@@ -18,7 +18,9 @@ pipeline {
     stage('SonarQube Analysis') {
       steps {
         withSonarQubeEnv('sonarqube') {
-          sh './mvnw sonar:sonar -Dsonar.projectKey=spring-petclinic -Dsonar.projectName=spring-petclinic'
+          withCredentials([string(credentialsId: 'sonarqube-token-new', variable: 'SONAR_TOKEN')]) {
+            sh './mvnw sonar:sonar -Dsonar.projectKey=spring-petclinic -Dsonar.projectName=spring-petclinic -Dsonar.login=$SONAR_TOKEN'
+          }
         }
       }
     }
