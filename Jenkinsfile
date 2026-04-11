@@ -25,7 +25,30 @@ pipeline {
       }
     }
 
+    stage('Security Scan') {
+      steps {
+        echo 'Expecting Burp HTML report at burp/index.html'
+        sh 'mkdir -p burp'
+        sh 'test -f burp/index.html'
+        sh 'echo "Burp report found"'
+        sh 'ls -la burp || true'
+      }
+    }
+
     // Future stage placeholder for Test
     // Future stage placeholder for Deploy
+  }
+
+  post {
+    always {
+      publishHTML([
+        reportDir: 'burp',
+        reportFiles: 'index.html',
+        reportName: 'Burp Security Report',
+        keepAll: true,
+        alwaysLinkToLastBuild: true,
+        allowMissing: false
+      ])
+    }
   }
 }

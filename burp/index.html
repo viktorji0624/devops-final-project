@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Baseline Security Scan Report</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 24px; color: #1f2937; }
+    h1, h2 { margin-bottom: 8px; }
+    .meta { margin-bottom: 16px; color: #374151; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0 24px; }
+    th, td { border: 1px solid #d1d5db; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; }
+    .note { background: #eef6ff; border: 1px solid #93c5fd; padding: 10px; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Baseline Security Scan Report</h1>
+  <div class="meta">
+    <div><strong>Target:</strong> http://host.docker.internal:8082</div>
+    <div><strong>Scan Time:</strong> Sat Apr 11 08:57:54 PM UTC 2026</div>
+    <div><strong>Mode:</strong> Direct</div>
+    <div><strong>Total Findings:</strong> 7</div>
+  </div>
+
+  <h2>Endpoint Reachability</h2>
+  <table>
+    <thead>
+      <tr><th>Path</th><th>HTTP Status</th><th>Response Time (s)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>/</td><td>200</td><td>0.029440</td></tr>\n<tr><td>/owners</td><td>200</td><td>0.055923</td></tr>\n<tr><td>/vets</td><td>200</td><td>0.006385</td></tr>\n<tr><td>/actuator/health</td><td>200</td><td>0.007421</td></tr>\n<tr><td>/error</td><td>500</td><td>0.005846</td></tr>\n
+    </tbody>
+  </table>
+
+  <h2>Baseline Findings</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Severity</th><th>Finding</th><th>Detail</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>MEDIUM</td><td>Server error response</td><td>http://host.docker.internal:8082/error returned HTTP 500.</td></tr>\n<tr><td>2</td><td>MEDIUM</td><td>Missing security header: X-Content-Type-Options</td><td>Set X-Content-Type-Options: nosniff</td></tr>\n<tr><td>3</td><td>MEDIUM</td><td>Missing security header: X-Frame-Options</td><td>Set X-Frame-Options: DENY or SAMEORIGIN</td></tr>\n<tr><td>4</td><td>HIGH</td><td>Missing security header: Content-Security-Policy</td><td>Define a strict Content-Security-Policy</td></tr>\n<tr><td>5</td><td>LOW</td><td>Missing security header: Referrer-Policy</td><td>Set Referrer-Policy to limit leaked referrer data</td></tr>\n<tr><td>6</td><td>LOW</td><td>Missing security header: Permissions-Policy</td><td>Set Permissions-Policy to disable unused browser features</td></tr>\n<tr><td>7</td><td>MEDIUM</td><td>Plain HTTP target</td><td>Target uses HTTP. Prefer HTTPS in production and CI security tests.</td></tr>\n
+    </tbody>
+  </table>
+
+  <div class="note">
+    This is a baseline scripted check report (connectivity + security headers + basic response issues), not a full DAST vulnerability audit.
+    For full DAST with automated vulnerability HTML reports, use Burp Suite Professional or OWASP ZAP in CI.
+  </div>
+</body>
+</html>

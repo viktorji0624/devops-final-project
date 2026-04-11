@@ -65,6 +65,9 @@ devops-final-project/
 ├── burpsuite/
 │   ├── Dockerfile            # Custom Burp Suite CE image
 │   └── entrypoint.sh         # Starts Xvfb + VNC + Burp Suite
+├── grafana/
+│   ├── dashboards/           # Provisioned Grafana dashboards
+│   └── provisioning/         # Datasource and dashboard providers
 ├── prometheus/
 │   └── prometheus.yml        # Scrape config for Jenkins metrics
 ├── src/                      # Spring PetClinic application source
@@ -101,8 +104,8 @@ devops-final-project/
 2. Prometheus is pre-configured to scrape Jenkins at `jenkins:8080/prometheus`
 3. Verify at http://localhost:9090/targets — Jenkins target should show as UP
 4. In Grafana (http://localhost:3000):
-   - Add Prometheus as a data source: URL = `http://prometheus:9090`
-   - Import or create dashboards for Jenkins metrics
+   - Prometheus is provisioned automatically as the default data source
+   - The `Jenkins Monitoring Overview` dashboard is provisioned automatically at startup
 
 ### Ansible Deployment to Production VM
 
