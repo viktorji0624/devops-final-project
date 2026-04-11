@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  triggers {
+    pollSCM('H/5 * * * *') // SCM polling every 5 minutes
+  }
+
   stages {
     stage('Checkout') {
       steps {
@@ -15,6 +19,12 @@ pipeline {
       }
     }
 
+    stage('Test') {
+      steps {
+        sh './mvnw test'
+      }
+    }
+
     stage('SonarQube Analysis') {
       steps {
         withSonarQubeEnv('sonarqube') {
@@ -25,7 +35,26 @@ pipeline {
       }
     }
 
-    // Future stage placeholder for Test
-    // Future stage placeholder for Deploy
+    stage('Deploy') {
+      steps {
+        sh '''
+          ansible-playbook -i ansible/inventory.ini ansible/deploy.yml \
+            --private-key .vagrant/machines/default/vmware_desktop/private_key \
+            -e jar_path=target/spring-petclinic-4.0.0-SNAPSHOT.jar
+        '''
+      }
+    }
+
+    stage('Burp Suite Scan') {
+      steps {
+        echo 'TODO: Burp Suite scan integration - requires API access and scripting to automate scans against the deployed application.'
+      }
+    }
+  }
+
+  post {
+    always {
+      junit '**/target/surefire-reports/*.xml'
+    }
   }
 }
