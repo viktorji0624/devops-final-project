@@ -77,9 +77,10 @@ devops-final-project/
 ### Jenkins Pipeline
 
 1. Create a new Pipeline job in Jenkins
-2. Point it to this repository
-3. Set up SCM polling as the build trigger
+2. Point it to this repository (Pipeline script from SCM)
+3. SCM polling is already configured in the Jenkinsfile (`H/5 * * * *`), no manual setup needed
 4. Install the Blue Ocean plugin for pipeline visualization
+5. Test results are automatically collected via JUnit (`post` block), viewable in the job dashboard
 
 ### SonarQube Integration
 
