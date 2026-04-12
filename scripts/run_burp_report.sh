@@ -2,7 +2,7 @@
 set -euo pipefail
 
 TARGET_URL="${1:-http://host.docker.internal:8082}"
-REPORT_DIR="${REPORT_DIR:-reports/burp}"
+REPORT_DIR="${REPORT_DIR:-burpsuite/report}"
 
 mkdir -p "${REPORT_DIR}"
 find "${REPORT_DIR}" -mindepth 1 -maxdepth 1 ! -name 'index.html' -delete

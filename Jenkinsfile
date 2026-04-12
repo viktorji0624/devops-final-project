@@ -27,11 +27,11 @@ pipeline {
 
     stage('Security Scan') {
       steps {
-        echo 'Expecting Burp HTML report at burp/index.html'
-        sh 'mkdir -p burp'
-        sh 'test -f burp/index.html'
+        echo 'Expecting Burp HTML report at burpsuite/report/index.html'
+        sh 'mkdir -p burpsuite/report'
+        sh 'test -f burpsuite/report/index.html'
         sh 'echo "Burp report found"'
-        sh 'ls -la burp || true'
+        sh 'ls -la burpsuite/report || true'
       }
     }
 
@@ -42,7 +42,7 @@ pipeline {
   post {
     always {
       publishHTML([
-        reportDir: 'burp',
+        reportDir: 'burpsuite/report',
         reportFiles: 'index.html',
         reportName: 'Burp Security Report',
         keepAll: true,

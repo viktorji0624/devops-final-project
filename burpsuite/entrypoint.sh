@@ -18,5 +18,5 @@ fluxbox >/tmp/fluxbox.log 2>&1 &
 x11vnc -display :99 -forever -nopw -rfbport 5900 >/tmp/x11vnc.log 2>&1 &
 /usr/share/novnc/utils/novnc_proxy --listen 6080 --vnc localhost:5900 >/tmp/novnc.log 2>&1 &
 
-echo "[entrypoint] Starting Burp with default persisted user state in /root"
+echo "[entrypoint] Starting Burp with container-local user state"
 exec java -jar /opt/burpsuite.jar --use-defaults

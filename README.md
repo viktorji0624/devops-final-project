@@ -155,7 +155,7 @@ bash scripts/run_burp_report.sh http://192.168.56.10:8080
 
 Generated report:
 
-- `reports/burp/index.html`
+- `burpsuite/report/index.html`
 
 #### Burp traffic flow
 
@@ -166,7 +166,7 @@ The interaction between the components is:
 3. The report script runs inside the same container and sends HTTP requests through that proxy
 4. The proxy forwards traffic to `http://host.docker.internal:8082`
 5. Port `8082` on the host is expected to forward to the PetClinic application running in the VM
-6. The response comes back through Burp, and the script writes the HTML report to `reports/burp/index.html`
+6. The response comes back through Burp, and the script writes the HTML report to `burpsuite/report/index.html`
 
 #### What the scripted report checks
 
