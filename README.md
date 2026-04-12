@@ -12,7 +12,7 @@ All pipeline services run as Docker containers on a shared `devsecops-net` bridg
 | SonarQube | 9000 | admin / admin |
 | Prometheus | 9090 | — |
 | Grafana | 3000 | admin / admin |
-| Burp Suite CE | 8081 (web), 5900 (VNC) | — |
+| Burp Suite CE | 8081 (web), 6080 (noVNC), 5900 (VNC) | — |
 | MySQL | 3306 | petclinic / petclinic |
 | PostgreSQL | 5432 | petclinic / petclinic |
 
@@ -51,7 +51,7 @@ Open http://localhost:8080, paste the password, and install suggested plugins.
 | SonarQube | http://localhost:9000 |
 | Prometheus | http://localhost:9090 |
 | Grafana | http://localhost:3000 |
-| Burp Suite | Connect VNC client to localhost:5900 |
+| Burp Suite | http://localhost:6080 (Recommended) or Connect VNC client to localhost:5900 |
 
 ## Project Structure
 
@@ -93,10 +93,92 @@ devops-final-project/
 
 ### Burp Suite Security Scan
 
-1. Connect to Burp Suite via VNC client at `localhost:5900`
-2. Configure Burp Suite to scan the running PetClinic application
-3. Export scan reports as HTML
-4. Add post-build action in Jenkins to publish HTML reports
+#### Start Burp and the target application
+
+Burp in this project runs inside the `burpsuite` Docker container. The container starts:
+
+- `Burp Suite Community Edition`
+- `x11vnc` on port `5900` 
+- `noVNC` on port `6080` (Recommended)
+
+Recommended startup flow:
+
+1. Start the full Docker stack:
+
+   ```bash
+   docker compose up -d
+   ```
+
+2. If you also need the Vagrant VM that hosts the deployed PetClinic application, start it separately:
+
+   ```bash
+   vagrant up
+   ```
+
+   Or use the project helper script if `vagrant` is installed:
+
+   ```bash
+   bash scripts/startup.sh
+   ```
+
+3. Open Burp's browser UI (This step require manual click in UI):
+
+   - noVNC: `http://localhost:6080` (Recommended)
+   - Raw VNC client: `localhost:5900`
+
+4. Confirm the target application is reachable:
+
+   - Host forwarded URL: `http://localhost:8082`
+   - VM private network URL: `http://192.168.56.10:8080`
+
+#### Burp report generation
+
+This repository includes a scripted Burp baseline report generator:
+
+```bash
+bash scripts/run_burp_report.sh
+```
+
+Default target:
+
+```text
+http://host.docker.internal:8082
+```
+
+This means the `burpsuite` container sends requests to the host's forwarded port `8082`, which should map to the PetClinic application running inside the VM.
+
+You can also scan another target explicitly:
+
+```bash
+bash scripts/run_burp_report.sh http://192.168.56.10:8080
+```
+
+Generated report:
+
+- `reports/burp/index.html`
+
+#### Burp traffic flow
+
+The interaction between the components is:
+
+1. You open Burp through `http://localhost:6080`
+2. The `burpsuite` container runs Burp and listens with its proxy on `127.0.0.1:8080` inside the container
+3. The report script runs inside the same container and sends HTTP requests through that proxy
+4. The proxy forwards traffic to `http://host.docker.internal:8082`
+5. Port `8082` on the host is expected to forward to the PetClinic application running in the VM
+6. The response comes back through Burp, and the script writes the HTML report to `reports/burp/index.html`
+
+#### What the scripted report checks
+
+The bundled Burp baseline report is not a full active vulnerability scan. It currently checks:
+
+- Endpoint reachability and response times
+- Burp process and proxy readiness
+- Basic security headers
+- Cookie flags such as `HttpOnly`, `SameSite`, and `Secure` on HTTPS
+- CORS behavior
+- Allowed HTTP methods and `TRACE`
+- Sensitive endpoint exposure such as `/actuator/*`, `/swagger-ui`, `/.env`, and `/.git/config`
 
 ### Prometheus and Grafana Monitoring
 
