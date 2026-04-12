@@ -17,7 +17,7 @@
   <h1>Baseline Security Scan Report</h1>
   <div class="meta">
     <div><strong>Target:</strong> http://host.docker.internal:8082</div>
-    <div><strong>Scan Time:</strong> Sun Apr 12 01:01:01 AM UTC 2026</div>
+    <div><strong>Scan Time:</strong> Sun Apr 12 08:26:53 PM UTC 2026</div>
     <div><strong>Mode:</strong> Proxy via http://127.0.0.1:8080</div>
     <div><strong>Total Findings:</strong> 15</div>
   </div>
@@ -28,11 +28,11 @@
       <tr><th>Path</th><th>HTTP Status</th><th>Response Time (s)</th></tr>
     </thead>
     <tbody>
-      <tr><td>/</td><td>200</td><td>0.040115</td></tr>
-<tr><td>/owners</td><td>200</td><td>0.112464</td></tr>
-<tr><td>/vets</td><td>200</td><td>0.020107</td></tr>
-<tr><td>/actuator/health</td><td>200</td><td>0.019734</td></tr>
-<tr><td>/error</td><td>500</td><td>0.014800</td></tr>
+      <tr><td>/</td><td>200</td><td>0.022256</td></tr>
+<tr><td>/owners</td><td>200</td><td>0.296015</td></tr>
+<tr><td>/vets</td><td>200</td><td>0.074692</td></tr>
+<tr><td>/actuator/health</td><td>200</td><td>0.027676</td></tr>
+<tr><td>/error</td><td>500</td><td>0.020402</td></tr>
 
     </tbody>
   </table>
@@ -48,7 +48,7 @@
 <tr><td>Burp proxy listener</td><td>OK</td><td>TCP listener is accepting connections on 127.0.0.1:8080</td></tr>
 <tr><td>Burp welcome page</td><td>OK</td><td>Direct GET http://127.0.0.1:8080/ returned Burp's built-in page (HTTP 200)</td></tr>
 <tr><td>Burp CA certificate</td><td>OK</td><td>GET http://127.0.0.1:8080/cert returned 986 bytes</td></tr>
-<tr><td>Burp container-network listener</td><td>WARN</td><td>TCP listener is not reachable on 172.19.0.7:8080; Burp appears loopback-only</td></tr>
+<tr><td>Burp container-network listener</td><td>WARN</td><td>TCP listener is not reachable on 172.24.0.5:8080; Burp appears loopback-only</td></tr>
 <tr><td>Burp proxy forward (HTTP)</td><td>OK</td><td>Proxy forwarded http://example.com/ (HTTP 200)</td></tr>
 <tr><td>Burp proxy forward (HTTPS)</td><td>OK</td><td>Proxy forwarded https://example.com/ (HTTP 200)</td></tr>
 <tr><td>Burp proxy forward (target)</td><td>OK</td><td>Proxy forwarded http://host.docker.internal:8082/ (HTTP 200)</td></tr>
@@ -98,7 +98,7 @@
       <tr><td>burp_https_proxy_ok</td><td>true</td></tr>
       <tr><td>burp_target_proxy_ok</td><td>true</td></tr>
       <tr><td>burp_bind_scope</td><td>loopback-only</td></tr>
-      <tr><td>burp_container_ip</td><td>172.19.0.7</td></tr>
+      <tr><td>burp_container_ip</td><td>172.24.0.5</td></tr>
       <tr><td>burp_container_ip_ok</td><td>false</td></tr>
       <tr><td>require_burp_process</td><td>true</td></tr>
       <tr><td>require_proxy_success</td><td>true</td></tr>
