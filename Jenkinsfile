@@ -29,9 +29,13 @@ pipeline {
       }
     }
 
-    stage('Burp Suite Scan') {
+    stage('Security Scan') {
       steps {
-        echo 'TODO: Burp Suite scan integration - requires API access and scripting to automate scans against the deployed application.'
+        echo 'Expecting Burp HTML report at burpsuite/report/index.html'
+        sh 'mkdir -p burpsuite/report'
+        sh 'test -f burpsuite/report/index.html'
+        sh 'echo "Burp report found"'
+        sh 'ls -la burpsuite/report || true'
       }
     }
 
@@ -57,6 +61,19 @@ pipeline {
   post {
     always {
       junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+    }
+  }
+
+  post {
+    always {
+      publishHTML([
+        reportDir: 'burpsuite/report',
+        reportFiles: 'index.html',
+        reportName: 'Burp Security Report',
+        keepAll: true,
+        alwaysLinkToLastBuild: true,
+        allowMissing: false
+      ])
     }
   }
 }
