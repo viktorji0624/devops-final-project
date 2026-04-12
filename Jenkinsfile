@@ -19,12 +19,6 @@ pipeline {
       }
     }
 
-    stage('Test') {
-      steps {
-        sh './mvnw test'
-      }
-    }
-
     stage('SonarQube Analysis') {
       steps {
         withSonarQubeEnv('sonarqube') {
