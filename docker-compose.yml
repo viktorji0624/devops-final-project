@@ -71,6 +71,8 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
     networks:
       - devsecops-net
 
@@ -80,6 +82,9 @@ services:
     ports:
       - "8081:8080"
       - "5900:5900"
+      - "6080:6080"
+    volumes:
+      - ./burpsuite/report:/reports
     networks:
       - devsecops-net
 

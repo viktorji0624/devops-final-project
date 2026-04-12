@@ -1,14 +1,22 @@
 #!/bin/bash
+set -euo pipefail
 
-# Start virtual framebuffer
+rm -f /tmp/.X99-lock
+rm -f /tmp/.X11-unix/X99
+
 Xvfb :99 -screen 0 1280x1024x24 &
 export DISPLAY=:99
 
-# Start a lightweight window manager
-fluxbox &
+for _ in {1..20}; do
+  if [ -S /tmp/.X11-unix/X99 ]; then
+    break
+  fi
+  sleep 0.5
+done
 
-# Start VNC server for remote access
-x11vnc -display :99 -forever -nopw -rfbport 5900 &
+fluxbox >/tmp/fluxbox.log 2>&1 &
+x11vnc -display :99 -forever -nopw -rfbport 5900 >/tmp/x11vnc.log 2>&1 &
+/usr/share/novnc/utils/novnc_proxy --listen 6080 --vnc localhost:5900 >/tmp/novnc.log 2>&1 &
 
-# Launch Burp Suite Community Edition
-java -jar /opt/burpsuite.jar
+echo "[entrypoint] Starting Burp with container-local user state"
+exec java -jar /opt/burpsuite.jar --use-defaults
