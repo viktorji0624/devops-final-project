@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./mvnw clean:*)",
+      "Bash(docker compose up:*)",
+      "Bash(docker exec:*)",
+      "Bash(curl -s http://localhost:8080/api/json?tree=jobs[name,url])",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s -u admin:9ebf1087c9f04fe2b379cc59bc88375a \"http://localhost:8080/api/json?tree=jobs\\\\[name,url\\\\]\")",
+      "Bash(curl:*)",
+      "Bash(docker start jenkins:*)",
+      "Bash(chmod +x:*)",
+      "Bash(docker compose down:*)"
+    ]
+  }
+}
