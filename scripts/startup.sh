@@ -2,7 +2,12 @@
 cd "$(dirname "$0")/.."
 
 echo "Starting Docker containers..."
+echo "Rebuilding and recreating Jenkins to apply Dockerfile updates (including Ansible)..."
+docker compose up -d --build --force-recreate jenkins
 docker compose up -d
+
+echo "Verifying Ansible inside Jenkins container..."
+docker exec jenkins sh -lc 'command -v ansible-playbook >/dev/null && ansible-playbook --version | head -n 1'
 
 echo "Starting Vagrant VM..."
 vagrant up --provider=${1:-vmware_desktop}

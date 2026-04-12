@@ -38,6 +38,14 @@ pipeline {
     stage('Deploy') {
       steps {
         sh '''
+          if ! command -v ansible-playbook >/dev/null 2>&1; then
+            echo "ERROR: ansible-playbook not found on this Jenkins agent."
+            echo "PATH=$PATH"
+            echo "If Jenkins runs in Docker, rebuild/recreate the jenkins service so jenkins/Dockerfile is applied:"
+            echo "docker compose build --no-cache jenkins && docker compose up -d --force-recreate jenkins"
+            exit 127
+          fi
+
           ansible-playbook -i ansible/inventory.ini ansible/deploy.yml \
             --private-key .vagrant/machines/default/vmware_desktop/private_key \
             -e jar_path=target/spring-petclinic-4.0.0-SNAPSHOT.jar
