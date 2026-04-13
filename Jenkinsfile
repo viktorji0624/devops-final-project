@@ -67,7 +67,6 @@ pipeline {
 
   post {
     always {
-      junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
       publishHTML([
         reportDir: 'burpsuite/report',
         reportFiles: 'index.html',
