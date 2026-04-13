@@ -45,6 +45,9 @@ out/
 ### Vagrant ###
 .vagrant/
 
+### Environment ###
+.env
+
 ### CSS ###
 _site/
 *.css

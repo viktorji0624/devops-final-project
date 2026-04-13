@@ -20,7 +20,12 @@
       "Read(//Library/LaunchDaemons/**)",
       "Bash(brew list:*)",
       "Bash(echo \"EXIT: $?\")",
-      "Bash(mdfind \"kMDItemKind == 'Application'\")"
+      "Bash(mdfind \"kMDItemKind == 'Application'\")",
+      "Bash(docker run:*)",
+      "Bash(docker compose:*)",
+      "Bash(nc -z 127.0.0.1 8082)",
+      "Bash(vagrant ssh:*)",
+      "Bash(git remote:*)"
     ]
   }
 }
