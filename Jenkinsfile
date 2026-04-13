@@ -50,8 +50,15 @@ pipeline {
             exit 127
           fi
 
+          VAGRANT_KEY=$(find /vagrant-keys/machines/default -name private_key -print -quit 2>/dev/null)
+          if [ -z "$VAGRANT_KEY" ]; then
+            echo "ERROR: Vagrant private key not found at /vagrant-keys/."
+            echo "Ensure the VM is running and docker-compose mounts .vagrant to /vagrant-keys."
+            exit 1
+          fi
+
           ansible-playbook -i ansible/inventory.ini ansible/deploy.yml \
-            --private-key .vagrant/machines/default/vmware_desktop/private_key \
+            --private-key "$VAGRANT_KEY" \
             -e jar_path=target/spring-petclinic-4.0.0-SNAPSHOT.jar
         '''
       }

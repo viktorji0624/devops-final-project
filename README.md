@@ -28,10 +28,20 @@ All pipeline services run as Docker containers on a shared `devsecops-net` bridg
 ### 1. Start all services
 
 ```bash
+./scripts/startup.sh
+```
+
+This starts only the Docker services by default.
+
+If you also want the Vagrant production VM, pass a provider explicitly:
+
+```bash
 ./scripts/startup.sh vmware_desktop
 ```
 
-This starts the Docker services and the Vagrant production VM together. If you only need the Docker stack, you can still run `docker compose up -d` manually.
+```bash
+./scripts/startup.sh virtualbox
+```
 
 ### 2. Unlock Jenkins
 
@@ -87,7 +97,7 @@ devops-final-project/
 
 ### SonarQube Integration
 
-1. Log into SonarQube at http://localhost:9000 (admin/1234)
+1. Log into SonarQube at http://localhost:9000 (admin/admin on first startup)
 2. Create a project and generate an authentication token
 3. Add the SonarQube stage to the Jenkinsfile with the token
 4. SonarQube is reachable from Jenkins at `http://sonarqube:9000` (container name)

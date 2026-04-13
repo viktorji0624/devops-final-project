@@ -10,7 +10,17 @@
       "Bash(curl:*)",
       "Bash(docker start jenkins:*)",
       "Bash(chmod +x:*)",
-      "Bash(docker compose down:*)"
+      "Bash(docker compose down:*)",
+      "Bash(vagrant status:*)",
+      "Bash(nc -z 127.0.0.1 2222)",
+      "Bash(sudo launchctl:*)",
+      "Bash(nc -z 127.0.0.1 9922)",
+      "Bash(docker info:*)",
+      "Bash(docker context ls:*)",
+      "Read(//Library/LaunchDaemons/**)",
+      "Bash(brew list:*)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(mdfind \"kMDItemKind == 'Application'\")"
     ]
   }
 }

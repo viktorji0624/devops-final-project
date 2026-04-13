@@ -9,8 +9,15 @@ docker compose up -d
 echo "Verifying Ansible inside Jenkins container..."
 docker exec jenkins sh -lc 'command -v ansible-playbook >/dev/null && ansible-playbook --version | head -n 1'
 
-echo "Starting Vagrant VM..."
-vagrant up --provider=${1:-vmware_desktop}
+VAGRANT_PROVIDER="${1:-virtualbox}"
+echo "Starting Vagrant VM with provider: ${VAGRANT_PROVIDER}"
+if ! command -v vagrant >/dev/null 2>&1; then
+  echo "WARNING: vagrant not found — skipping VM startup."
+  echo "  If running inside a devcontainer, start the VM from the host instead:"
+  echo "    vagrant up --provider=${VAGRANT_PROVIDER}"
+else
+  vagrant up --provider="${VAGRANT_PROVIDER}"
+fi
 
 echo "Done. All services running."
 echo ""
