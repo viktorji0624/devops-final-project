@@ -25,7 +25,12 @@
       "Bash(docker compose:*)",
       "Bash(nc -z 127.0.0.1 8082)",
       "Bash(vagrant ssh:*)",
-      "Bash(git remote:*)"
+      "Bash(git remote:*)",
+      "Bash(git fetch:*)",
+      "Bash(git merge:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }
