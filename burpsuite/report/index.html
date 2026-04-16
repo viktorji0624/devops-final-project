@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Baseline Security Scan Report</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 24px; color: #1f2937; }
+    h1, h2 { margin-bottom: 8px; }
+    .meta { margin-bottom: 16px; color: #374151; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0 24px; }
+    th, td { border: 1px solid #d1d5db; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; }
+    .note { background: #eef6ff; border: 1px solid #93c5fd; padding: 10px; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Baseline Security Scan Report</h1>
+  <div class="meta">
+    <div><strong>Target:</strong> http://host.docker.internal:8082</div>
+    <div><strong>Scan Time:</strong> Sun Apr 12 08:26:53 PM UTC 2026</div>
+    <div><strong>Mode:</strong> Proxy via http://127.0.0.1:8080</div>
+    <div><strong>Total Findings:</strong> 15</div>
+  </div>
+
+  <h2>Endpoint Reachability</h2>
+  <table>
+    <thead>
+      <tr><th>Path</th><th>HTTP Status</th><th>Response Time (s)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>/</td><td>200</td><td>0.022256</td></tr>
+<tr><td>/owners</td><td>200</td><td>0.296015</td></tr>
+<tr><td>/vets</td><td>200</td><td>0.074692</td></tr>
+<tr><td>/actuator/health</td><td>200</td><td>0.027676</td></tr>
+<tr><td>/error</td><td>500</td><td>0.020402</td></tr>
+
+    </tbody>
+  </table>
+
+  <h2>Burp Capability Evidence</h2>
+  <table>
+    <thead>
+      <tr><th>Check</th><th>Status</th><th>Detail</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Burp version</td><td>OK</td><td>2026.3.2-46522 Burp Suite Community Edition </td></tr>
+<tr><td>Burp process</td><td>OK</td><td>java -jar /opt/burpsuite.jar detected</td></tr>
+<tr><td>Burp proxy listener</td><td>OK</td><td>TCP listener is accepting connections on 127.0.0.1:8080</td></tr>
+<tr><td>Burp welcome page</td><td>OK</td><td>Direct GET http://127.0.0.1:8080/ returned Burp's built-in page (HTTP 200)</td></tr>
+<tr><td>Burp CA certificate</td><td>OK</td><td>GET http://127.0.0.1:8080/cert returned 986 bytes</td></tr>
+<tr><td>Burp container-network listener</td><td>WARN</td><td>TCP listener is not reachable on 172.24.0.5:8080; Burp appears loopback-only</td></tr>
+<tr><td>Burp proxy forward (HTTP)</td><td>OK</td><td>Proxy forwarded http://example.com/ (HTTP 200)</td></tr>
+<tr><td>Burp proxy forward (HTTPS)</td><td>OK</td><td>Proxy forwarded https://example.com/ (HTTP 200)</td></tr>
+<tr><td>Burp proxy forward (target)</td><td>OK</td><td>Proxy forwarded http://host.docker.internal:8082/ (HTTP 200)</td></tr>
+<tr><td>Cookie inspection</td><td>INFO</td><td>No Set-Cookie headers were observed on the base URL</td></tr>
+<tr><td>CORS policy</td><td>INFO</td><td>No Access-Control-Allow-Origin header was returned for a cross-origin probe</td></tr>
+<tr><td>Allowed methods</td><td>OK</td><td>OPTIONS probe returned HTTP 200 with Allow=GET,HEAD,OPTIONS</td></tr>
+
+    </tbody>
+  </table>
+
+  <h2>Sensitive Endpoint Probes</h2>
+  <table>
+    <thead>
+      <tr><th>Path</th><th>HTTP Status</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>/actuator</td><td>200</td><td>Actuator root exposed</td></tr>
+<tr><td>/actuator/env</td><td>200</td><td>Spring environment endpoint exposed</td></tr>
+<tr><td>/actuator/beans</td><td>200</td><td>Spring beans endpoint exposed</td></tr>
+<tr><td>/actuator/mappings</td><td>200</td><td>Spring mappings endpoint exposed</td></tr>
+<tr><td>/actuator/configprops</td><td>200</td><td>Spring configprops endpoint exposed</td></tr>
+<tr><td>/actuator/threaddump</td><td>200</td><td>Thread dump endpoint exposed</td></tr>
+<tr><td>/actuator/heapdump</td><td>404</td><td>Heap dump endpoint exposed</td></tr>
+<tr><td>/actuator/prometheus</td><td>404</td><td>Prometheus metrics endpoint exposed</td></tr>
+<tr><td>/swagger-ui/index.html</td><td>404</td><td>Swagger UI exposed</td></tr>
+<tr><td>/v3/api-docs</td><td>404</td><td>OpenAPI schema exposed</td></tr>
+<tr><td>/h2-console</td><td>404</td><td>H2 console exposed</td></tr>
+<tr><td>/.env</td><td>404</td><td>dotenv file exposed</td></tr>
+<tr><td>/.git/config</td><td>404</td><td>Git metadata exposed</td></tr>
+
+    </tbody>
+  </table>
+
+  <h2>Execution Summary</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Value</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>burp_version</td><td>2026.3.2-46522 Burp Suite Community Edition </td></tr>
+      <tr><td>burp_process_ok</td><td>true</td></tr>
+      <tr><td>burp_proxy_ok</td><td>true</td></tr>
+      <tr><td>burp_loopback_ok</td><td>true</td></tr>
+      <tr><td>burp_welcome_ok</td><td>true</td></tr>
+      <tr><td>burp_ca_cert_ok</td><td>true</td></tr>
+      <tr><td>burp_http_proxy_ok</td><td>true</td></tr>
+      <tr><td>burp_https_proxy_ok</td><td>true</td></tr>
+      <tr><td>burp_target_proxy_ok</td><td>true</td></tr>
+      <tr><td>burp_bind_scope</td><td>loopback-only</td></tr>
+      <tr><td>burp_container_ip</td><td>172.24.0.5</td></tr>
+      <tr><td>burp_container_ip_ok</td><td>false</td></tr>
+      <tr><td>require_burp_process</td><td>true</td></tr>
+      <tr><td>require_proxy_success</td><td>true</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Baseline Findings</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Severity</th><th>Finding</th><th>Detail</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>MEDIUM</td><td>Server error response</td><td>http://host.docker.internal:8082/error returned HTTP 500.</td></tr>
+<tr><td>2</td><td>MEDIUM</td><td>Missing security header: X-Content-Type-Options</td><td>Set X-Content-Type-Options: nosniff</td></tr>
+<tr><td>3</td><td>MEDIUM</td><td>Missing security header: X-Frame-Options</td><td>Set X-Frame-Options: DENY or SAMEORIGIN</td></tr>
+<tr><td>4</td><td>HIGH</td><td>Missing security header: Content-Security-Policy</td><td>Define a strict Content-Security-Policy</td></tr>
+<tr><td>5</td><td>LOW</td><td>Missing security header: Referrer-Policy</td><td>Set Referrer-Policy to limit leaked referrer data</td></tr>
+<tr><td>6</td><td>LOW</td><td>Missing security header: Permissions-Policy</td><td>Set Permissions-Policy to disable unused browser features</td></tr>
+<tr><td>7</td><td>LOW</td><td>Missing security header: Cross-Origin-Opener-Policy</td><td>Set Cross-Origin-Opener-Policy to reduce cross-window attack surface</td></tr>
+<tr><td>8</td><td>LOW</td><td>Missing security header: Cross-Origin-Resource-Policy</td><td>Set Cross-Origin-Resource-Policy for sensitive resources</td></tr>
+<tr><td>9</td><td>MEDIUM</td><td>Plain HTTP target</td><td>Target uses HTTP. Prefer HTTPS in production and CI security tests.</td></tr>
+<tr><td>10</td><td>LOW</td><td>Actuator root exposed</td><td>http://host.docker.internal:8082/actuator is directly accessible and returned HTTP 200.</td></tr>
+<tr><td>11</td><td>HIGH</td><td>Spring environment endpoint exposed</td><td>http://host.docker.internal:8082/actuator/env is directly accessible and returned HTTP 200.</td></tr>
+<tr><td>12</td><td>MEDIUM</td><td>Spring beans endpoint exposed</td><td>http://host.docker.internal:8082/actuator/beans is directly accessible and returned HTTP 200.</td></tr>
+<tr><td>13</td><td>MEDIUM</td><td>Spring mappings endpoint exposed</td><td>http://host.docker.internal:8082/actuator/mappings is directly accessible and returned HTTP 200.</td></tr>
+<tr><td>14</td><td>MEDIUM</td><td>Spring configprops endpoint exposed</td><td>http://host.docker.internal:8082/actuator/configprops is directly accessible and returned HTTP 200.</td></tr>
+<tr><td>15</td><td>HIGH</td><td>Thread dump endpoint exposed</td><td>http://host.docker.internal:8082/actuator/threaddump is directly accessible and returned HTTP 200.</td></tr>
+
+    </tbody>
+  </table>
+
+  <div class="note">
+    This is a baseline scripted check report (connectivity, passive security checks, sensitive endpoint probes, and Burp capability evidence), not a full DAST vulnerability audit.
+    For full DAST with automated vulnerability HTML reports, use Burp Suite Professional or OWASP ZAP in CI.
+  </div>
+</body>
+</html>

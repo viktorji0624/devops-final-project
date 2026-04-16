@@ -5,7 +5,10 @@
   th:replace="~{fragments/layout :: layout (~{::body},'home')}"
 >
   <body>
-    <h2 th:text="#{welcome}">Welcome</h2>
+    <div class="d-flex align-items-center flex-wrap gap-2">
+      <h2 class="mb-0" th:text="#{welcome}">Welcome</h2>
+      <span id="welcome-clock" class="h5 mb-0 text-primary" aria-live="polite">--:--:--</span>
+    </div>
     <div class="row">
       <div class="col-md-12">
         <img
@@ -15,5 +18,27 @@
         />
       </div>
     </div>
+    <script>
+      (() => {
+        const clockElement = document.getElementById("welcome-clock");
+        if (!clockElement) {
+          return;
+        }
+
+        const updateClock = () => {
+          const now = new Date();
+          const dateText = now.toLocaleDateString("zh-TW", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+          });
+          const timeText = now.toLocaleTimeString("zh-TW", { hour12: false });
+          clockElement.textContent = `${dateText} ${timeText}`;
+        };
+
+        updateClock();
+        window.setInterval(updateClock, 1000);
+      })();
+    </script>
   </body>
 </html>
