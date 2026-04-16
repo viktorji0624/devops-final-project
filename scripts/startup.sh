@@ -48,22 +48,29 @@ GIT_REPO_URL=${GIT_REPO_URL}
 EOF
 echo "   .env written (SONAR_TOKEN, GIT_REPO_URL)"
 
-# ── 4. Build and start all Docker services ──
+# ── 4. Start Vagrant VM (before Docker, so .vagrant/ key is ready for mount) ──
+echo "==> Starting Vagrant VM with provider: ${VAGRANT_PROVIDER}"
+if ! command -v vagrant >/dev/null 2>&1; then
+  echo "   WARNING: vagrant not found — skipping VM startup."
+  echo "   The Deploy stage will be skipped in Jenkins."
+  echo "   To enable deployment, install Vagrant and run: vagrant up --provider=${VAGRANT_PROVIDER}"
+else
+  vagrant up --provider="${VAGRANT_PROVIDER}"
+  VAGRANT_KEY=$(find .vagrant/machines/default -name private_key -print -quit 2>/dev/null)
+  if [ -n "$VAGRANT_KEY" ]; then
+    echo "   Vagrant SSH key found: ${VAGRANT_KEY}"
+  else
+    echo "   WARNING: Vagrant VM started but private_key not found."
+  fi
+fi
+
+# ── 5. Build and start all Docker services ──
 echo "==> Building and starting all services..."
 docker compose build jenkins
 docker compose up -d
 
 echo "==> Verifying Ansible inside Jenkins container..."
 docker exec jenkins sh -lc 'command -v ansible-playbook >/dev/null && ansible-playbook --version | head -n 1' || true
-
-# ── 5. Start Vagrant VM ──
-echo "==> Starting Vagrant VM with provider: ${VAGRANT_PROVIDER}"
-if ! command -v vagrant >/dev/null 2>&1; then
-  echo "   WARNING: vagrant not found — skipping VM startup."
-  echo "   Start the VM from the host: vagrant up --provider=${VAGRANT_PROVIDER}"
-else
-  vagrant up --provider="${VAGRANT_PROVIDER}"
-fi
 
 # ── 6. Wait for Jenkins and trigger first pipeline ──
 echo "==> Waiting for Jenkins to be ready..."
