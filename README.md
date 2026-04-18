@@ -320,6 +320,45 @@ If screenshots are required by your course submission format, capture the follow
 7. Burp report at `burpsuite/report/index.html`
 8. Deployed app reachable at `http://localhost:8082`
 
+**Docker and Vagrant Startup Evidence**
+![Docker and Vagrant startup 1](Project%20Screenshots/Docker%20&%20Vagrant/Screenshot%202026-04-12%20at%205.39.53%E2%80%AFPM.png)
+![Docker and Vagrant startup 2](Project%20Screenshots/Docker%20&%20Vagrant/Screenshot%202026-04-12%20at%205.40.07%E2%80%AFPM.png)
+
+**Jenkins Dashboard / Job Trigger Evidence**
+![Jenkins pipeline trigger](Project%20Screenshots/Jenkins%20Pipeline/demo%20triggered%20pipeline.png)
+
+**Blue Ocean Pipeline Evidence**
+![Blue Ocean pipeline stage visualization](Project%20Screenshots/Jenkins%20Pipeline/ocean%20blue%20pipeline%20stage%20visualization.png)
+
+**Jenkins Console and Deployment Success Evidence**
+![Jenkins pipeline console output](Project%20Screenshots/Jenkins%20Pipeline/jenkins%20pipeline%20console%20output.png)
+![Jenkins deployment successful](Project%20Screenshots/Jenkins%20Pipeline/deployment%20successful.png)
+
+**SonarQube Dashboard Evidence**
+![SonarQube analysis overview](Project%20Screenshots/SonarQube/SonarQube%20Analysis%20overview.png)
+![SonarQube code smell analysis](Project%20Screenshots/SonarQube/SonarQube%20Analysis%20on%20code%20smell.png)
+
+**Prometheus / Grafana Evidence**
+![Monitoring screenshot 1](Project%20Screenshots/Grafana%20and%20Prometheus/%E6%88%AA%E5%9C%96%202026-04-16%20%E4%B8%8B%E5%8D%884.25.37.png)
+![Monitoring screenshot 2](Project%20Screenshots/Grafana%20and%20Prometheus/%E6%88%AA%E5%9C%96%202026-04-16%20%E4%B8%8B%E5%8D%884.26.02.png)
+![Monitoring screenshot 3](Project%20Screenshots/Grafana%20and%20Prometheus/%E6%88%AA%E5%9C%96%202026-04-16%20%E4%B8%8B%E5%8D%884.26.42.png)
+![Monitoring screenshot 4](Project%20Screenshots/Grafana%20and%20Prometheus/%E6%88%AA%E5%9C%96%202026-04-16%20%E4%B8%8B%E5%8D%884.29.34.png)
+
+**Burp Suite Scan Evidence**
+![Burp report webpage](Project%20Screenshots/Burp%20Suite/burp%20suite%20report%20webpage.png)
+![run_burp_report.sh result](Project%20Screenshots/Burp%20Suite/run_burp_report.sh%20result.png)
+
+**Ansible Deployment and Production VM App Evidence**
+![Ansible playbook completed successfully](Project%20Screenshots/Ansible/ansible%20playbook%20completed%20successfully.png)
+![Application built successfully](Project%20Screenshots/Ansible/application%20built%20successfully.png)
+![Vagrant status](Project%20Screenshots/Ansible/vagrant%20status.png)
+
+**Before Deployment Proof**
+![Production VM app before change](Project%20Screenshots/Ansible/web-before-change.png)
+
+**After Deployment Proof**
+![Production VM app after change](Project%20Screenshots/Ansible/web-after-change.png)
+
 ## 7. Known limitations / notes
 
 - Burp scan execution is currently initiated by `scripts/run_burp_report.sh`; Jenkins validates and publishes the generated report rather than running Burp crawl itself.
