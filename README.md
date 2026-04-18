@@ -91,7 +91,7 @@ Verify:
 
 Jenkins dashboard / job trigger screenshot:
 
-![Jenkins pipeline trigger](project_screenshots/demo%20triggered%20pipeline.png)
+![Jenkins pipeline trigger](./Project%20Screenshots/Jenkins%20Pipeline/demo%20triggered%20pipeline.png)
 
 Configured by:
 
@@ -111,9 +111,9 @@ Verification:
 
 SonarQube dashboard screenshots:
 
-![SonarQube analysis overview](project_screenshots/SonarQube%20Analysis%20overview.png)
+![SonarQube analysis overview](./Project%20Screenshots/SonarQube/SonarQube%20Analysis%20overview.png)
 
-![SonarQube code smell analysis](project_screenshots/SonarQube%20Analysis%20on%20code%20smell.png)
+![SonarQube code smell analysis](./Project%20Screenshots/SonarQube/SonarQube%20Analysis%20on%20code%20smell.png)
 
 Integration details:
 
@@ -143,9 +143,9 @@ Trigger model:
 
 Pipeline screenshots:
 
-![Blue Ocean pipeline stage visualization](project_screenshots/ocean%20blue%20pipeline%20stage%20visualization.png)
+![Blue Ocean pipeline stage visualization](./Project%20Screenshots/Jenkins%20Pipeline/ocean%20blue%20pipeline%20stage%20visualization.png)
 
-![Jenkins pipeline console output](project_screenshots/jenkins%20pipeline%20console%20output.png)
+![Jenkins pipeline console output](./Project%20Screenshots/Jenkins%20Pipeline/jenkins%20pipeline%20console%20output.png)
 
 ### Step 6: Monitoring setup (Prometheus + Grafana)
 
@@ -171,9 +171,9 @@ Configured by:
 
 Monitoring screenshots:
 
-![Prometheus or Grafana monitoring screenshot 1](project_screenshots/%E6%88%AA%E5%9C%96%202026-04-16%20%E4%B8%8B%E5%8D%884.25.37.png)
+![Prometheus or Grafana monitoring screenshot 1](./Project%20Screenshots/Grafana%20and%20Prometheus/%E6%88%AA%E5%9C%96%202026-04-16%20%E4%B8%8B%E5%8D%884.25.37.png)
 
-![Prometheus or Grafana monitoring screenshot 2](project_screenshots/%E6%88%AA%E5%9C%96%202026-04-16%20%E4%B8%8B%E5%8D%884.26.02.png)
+![Prometheus or Grafana monitoring screenshot 2](./Project%20Screenshots/Grafana%20and%20Prometheus/%E6%88%AA%E5%9C%96%202026-04-16%20%E4%B8%8B%E5%8D%884.26.02.png)
 
 ### Step 7: Security scan setup (Burp Suite baseline workflow)
 
@@ -207,9 +207,9 @@ Important accuracy note:
 
 Burp Suite screenshots:
 
-![Burp report webpage](project_screenshots/burp%20suite%20report%20webpage.png)
+![Burp report webpage](./Project%20Screenshots/Burp%20Suite/burp%20suite%20report%20webpage.png)
 
-![run_burp_report.sh result](project_screenshots/run_burp_report.sh%20result.png)
+![run_burp_report.sh result](./Project%20Screenshots/Burp%20Suite/run_burp_report.sh%20result.png)
 
 ### Step 8: Deployment setup (Ansible to VM)
 
@@ -244,15 +244,15 @@ Verify deployed app:
 
 Deployment screenshots:
 
-![Ansible playbook completed successfully](project_screenshots/ansible%20playbook%20completed%20successfully.png)
+![Ansible playbook completed successfully](./Project%20Screenshots/Ansible/ansible%20playbook%20completed%20successfully.png)
 
-![Jenkins deployment successful](project_screenshots/deployment%20successful.png)
+![Jenkins deployment successful](./Project%20Screenshots/Jenkins%20Pipeline/deployment%20successful.png)
 
 Before/after deployment proof:
 
-![Production VM app before change](project_screenshots/web-before-change.png)
+![Production VM app before change](./Project%20Screenshots/Ansible/web-before-change.png)
 
-![Production VM app after change](project_screenshots/web-after-change.png)
+![Production VM app after change](./Project%20Screenshots/Ansible/web-after-change.png)
 
 ### Step 9: Verification flow (end-to-end)
 
